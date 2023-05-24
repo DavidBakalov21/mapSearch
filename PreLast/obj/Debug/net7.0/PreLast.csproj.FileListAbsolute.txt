@@ -1,0 +1,15 @@
+C:\Users\Давід\RiderProjects\PreLast\PreLast\bin\Debug\net7.0\PreLast.exe
+C:\Users\Давід\RiderProjects\PreLast\PreLast\bin\Debug\net7.0\PreLast.deps.json
+C:\Users\Давід\RiderProjects\PreLast\PreLast\bin\Debug\net7.0\PreLast.runtimeconfig.json
+C:\Users\Давід\RiderProjects\PreLast\PreLast\bin\Debug\net7.0\PreLast.dll
+C:\Users\Давід\RiderProjects\PreLast\PreLast\bin\Debug\net7.0\PreLast.pdb
+C:\Users\Давід\RiderProjects\PreLast\PreLast\obj\Debug\net7.0\PreLast.csproj.AssemblyReference.cache
+C:\Users\Давід\RiderProjects\PreLast\PreLast\obj\Debug\net7.0\PreLast.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Давід\RiderProjects\PreLast\PreLast\obj\Debug\net7.0\PreLast.AssemblyInfoInputs.cache
+C:\Users\Давід\RiderProjects\PreLast\PreLast\obj\Debug\net7.0\PreLast.AssemblyInfo.cs
+C:\Users\Давід\RiderProjects\PreLast\PreLast\obj\Debug\net7.0\PreLast.csproj.CoreCompileInputs.cache
+C:\Users\Давід\RiderProjects\PreLast\PreLast\obj\Debug\net7.0\PreLast.dll
+C:\Users\Давід\RiderProjects\PreLast\PreLast\obj\Debug\net7.0\refint\PreLast.dll
+C:\Users\Давід\RiderProjects\PreLast\PreLast\obj\Debug\net7.0\PreLast.pdb
+C:\Users\Давід\RiderProjects\PreLast\PreLast\obj\Debug\net7.0\PreLast.genruntimeconfig.cache
+C:\Users\Давід\RiderProjects\PreLast\PreLast\obj\Debug\net7.0\ref\PreLast.dll
