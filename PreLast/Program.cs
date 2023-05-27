@@ -1,6 +1,13 @@
 ﻿using System.Globalization;
+using PreLast;
+
+/*
+using System.Diagnostics;
+
+var sw = new Stopwatch();
+sw.Start();
 var  Words= File.ReadAllLines("C:\\Users\\Давід\\RiderProjects\\PreLast\\PreLast\\ukraine_poi.csv");
-Console.WriteLine(CalculateDistance( 50.44075, 30.55263,  48.89283,  22.40971));
+//Console.WriteLine(CalculateDistance( 50.44075, 30.55263,  48.89283,  22.40971));
 var latitude1 = Console.ReadLine();
 var longitude1 = Console.ReadLine();
 var radius = Console.ReadLine();
@@ -15,16 +22,12 @@ for (int i = 0; i < Words.Length; i++)
     {
         var distance=CalculateDistance( double.Parse(latitude1, CultureInfo.InvariantCulture), double.Parse(longitude1, CultureInfo.InvariantCulture),  double.Parse(latitude, CultureInfo.InvariantCulture),  double.Parse(longitude, CultureInfo.InvariantCulture));
 
-        if (distance/100<=double.Parse(radius, CultureInfo.InvariantCulture))
+        if (distance/1000<=double.Parse(radius, CultureInfo.InvariantCulture))
         {
           
-            Places.Add(Words[i]);
+            Places.Add(Words[i]+"--distance--"+distance/1000);
         }  
     }
-   
-
-
-   
 }
 
 foreach (var VARIABLE in Places)
@@ -45,5 +48,33 @@ double CalculateDistance(double lat1, double lon1, double lat2, double lon2)
     return distance;
 }
 
+sw.Stop();
+Console.WriteLine($"Elapsed time: {sw.Elapsed}");
+*/
 
 
+var words = File.ReadAllLines("C:\\Users\\Давід\\RiderProjects\\PreLast\\PreLast\\ukraine_poi.csv");
+var latList = new List<double>();
+var longList = new List<double>();
+for (int i = 0; i < words.Length; i++)
+{
+    var split = words[i].Split(";");
+    var latitude = split[0];
+    var longitude = split[1];
+    if (latitude != "" && longitude != "" && latitude != null && longitude != null)
+    {
+        latList.Add(double.Parse(latitude));
+        longList.Add(double.Parse(longitude));
+    }
+}
+
+var bottom_leftPoint= new Point("bottom_left", longList.Min(), latList.Min());
+var top_rightPoint= new Point("top_right", longList.Max(), latList.Max());
+Console.WriteLine(bottom_leftPoint.latitude);
+Console.WriteLine(bottom_leftPoint.longitude);
+//create a point class(lat, long , type)-Done
+    // craete  rect (class point) (min lat min long; max lat max lat)
+    //class tree with root(class) (in all classes rect heir)
+    
+    
+    // throw pointlist and radius to func 
