@@ -6,7 +6,7 @@ public class Point
     public double longitude;
     public double latitude;
 
-    public Point(string name, double longitude, double latitude)
+    public Point(string name, double latitude, double longitude)
     {
 
         this.name = name;

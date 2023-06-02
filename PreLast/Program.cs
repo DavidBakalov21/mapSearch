@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics;
+using System.Globalization;
 using PreLast;
 
 
@@ -54,7 +55,7 @@ Console.WriteLine($"Elapsed time: {sw.Elapsed}");
 */
 
 
-var words = File.ReadAllLines("C:\\Users\\Давід\\RiderProjects\\PreLast\\PreLast\\test.csv");
+var words = File.ReadAllLines("C:\\Users\\Давід\\RiderProjects\\PreLast\\PreLast\\ukraine_poi.csv");
 var latList = new List<double>();
 var longList = new List<double>();
 var Points = new List<Point>();
@@ -84,14 +85,12 @@ for (int i = 0; i < words.Length; i++)
       
         latList.Add(double.Parse(latitude, CultureInfo.InvariantCulture));
         longList.Add(double.Parse(longitude, CultureInfo.InvariantCulture));
-        Points.Add(new Point(name, double.Parse(longitude, CultureInfo.InvariantCulture),double.Parse(latitude, CultureInfo.InvariantCulture)));
+        Points.Add(new Point(name, double.Parse(latitude, CultureInfo.InvariantCulture),double.Parse(longitude, CultureInfo.InvariantCulture)));
     }
 }
 
-var bottom_leftPoint= new Point("bottom_left", longList.Min(), latList.Min());
-var top_rightPoint= new Point("top_right", longList.Max(), latList.Max());
-Console.WriteLine(bottom_leftPoint.latitude);
-Console.WriteLine(bottom_leftPoint.longitude);
+var bottom_leftPoint= new Point("bottom_left", latList.Min(),longList.Min() );
+var top_rightPoint= new Point("top_right", latList.Max(),longList.Max() );
 //create a point class(lat, long , type)-Done
     // craete  rect (class point) (min lat min long; max lat max lat)
     //class tree with root(class) (in all classes rect heir)
@@ -102,28 +101,33 @@ Console.WriteLine(bottom_leftPoint.longitude);
 foreach (var VARIABLE in Points)
 {
     var output = VARIABLE.name+" " + VARIABLE.latitude+" "+ VARIABLE.longitude;
-    Console.WriteLine(output);
+   // Console.WriteLine(output);
 }
-KdTree buildTree(List<Point> pointList)
+KdTree buildTree(List<Point> pointList, rect StartRect)
 {
     KdTree kdTree = new KdTree();
-    kdTree.BuildTree(pointList);
+    kdTree.BuildTree(pointList, StartRect);
     return kdTree;
 }
 
-var a = buildTree(Points);
-var b= buildTree(Points);
+var StartRect = new rect(bottom_leftPoint, top_rightPoint);
+var a = buildTree(Points,StartRect);
+var b= buildTree(Points,StartRect);
 
 
 class Node
 {
-    public Point value { get; set; }
+    public List<Point> value { get; set; }
+   
+    public rect rectvalue { get; set; }
     public Node left { get; set; }
     public Node Right { get; set; }
 
-    public Node(Point Value)
+    public Node(List<Point> Value, rect RectVal)
     {
         value = Value;
+        rectvalue = RectVal;
+
     }
 }
 
@@ -136,27 +140,72 @@ class KdTree
         Root = null;
     }
 
-    public void BuildTree(List<Point> pointList)
+    public void BuildTree(List<Point> pointList, rect Strtrect)
     {
-        Root = BuildTreeRecursive(pointList, 0);
+        Root = BuildTreeRecursive(pointList, 0, Strtrect);
     }
 
-    private Node BuildTreeRecursive(List<Point> pointList, int depth)
+    private Node BuildTreeRecursive(List<Point> pointList, int depth, rect startRect)
     {
-        if (pointList.Count == 0)
+
+
+        if (pointList.Count <= 10)
         {
-            return null;
+            
+            return new Node(pointList,startRect);
         }
 
-        int axis = depth % 2; // Alternate between x-axis (longitude) and y-axis (latitude)
+
+        int axis = depth % 2; 
         pointList.Sort((a, b) => axis == 0 ? a.longitude.CompareTo(b.longitude) : a.latitude.CompareTo(b.latitude));
+
         int medianIndex = pointList.Count / 2;
         Point medianPoint = pointList[medianIndex];
 
-        Node node = new Node(medianPoint);
-        node.left = BuildTreeRecursive(pointList.GetRange(0, medianIndex), depth + 1);
-        node.Right = BuildTreeRecursive(pointList.GetRange(medianIndex + 1, pointList.Count - medianIndex - 1), depth + 1);
+        rect newRectL;
+        rect newRectR;
+        if (axis == 0)
+        {
+            newRectL = new rect(startRect.BottomLeft, new Point("name", medianPoint.latitude, startRect.TopRight.longitude ));
+            newRectR = new rect(new Point("name", medianPoint.latitude, startRect.BottomLeft.longitude ), startRect.TopRight);
+            
+        }
+        else
+        {
+            newRectL = new rect(new Point("name", startRect.BottomLeft.latitude,  medianPoint.longitude), startRect.TopRight);
+            newRectR = new rect(startRect.BottomLeft, new Point("name", startRect.TopRight.latitude, medianPoint.longitude ));
+        }
+
+        Node node = new Node(null, startRect);
+        node.left = BuildTreeRecursive(pointList.GetRange(0, medianIndex), depth + 1, newRectL);
+        node.Right = BuildTreeRecursive(pointList.GetRange(medianIndex + 1, pointList.Count - medianIndex - 1), depth + 1, newRectR);
 
         return node;
+    }
+
+    public List<Point> Traverse(rect Rect, Point point, Node node)
+    {
+        
+      var  traverseLeft= Traverse(node.rectvalue, point,node.left);
+      var  traverseRight= Traverse(node.rectvalue, point,node.Right);
+      
+      if (traverseLeft == null)
+      {
+          var list = node.value;
+          foreach (var VARIABLE in list)
+          {
+              
+          }
+
+      }
+      if (traverseRight == null)
+      {
+          var list = node.value;
+          foreach (var VARIABLE in list)
+          {
+              
+          }
+      }
+        return null;
     }
 }
